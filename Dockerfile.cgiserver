@@ -1,0 +1,15 @@
+# FROM debian:11-slim
+FROM ubuntu:22.04
+
+ARG application_version
+LABEL maintainer="Joe Block <jpb@unixorn.net>"
+LABEL version=${application_version}
+
+RUN apt-get update
+RUN apt-get install -y apt-utils ca-certificates --no-install-recommends
+RUN update-ca-certificates
+
+RUN apt-get install -y moosefs-cgiserv
+LABEL description="moosefs-cgiserv image"
+
+CMD ["bash", "-l"]
