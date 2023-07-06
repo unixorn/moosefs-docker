@@ -12,4 +12,4 @@ RUN update-ca-certificates
 RUN apt-get install -y moosefs-chunkserver
 LABEL description="moosefs-chunkserver image"
 
-CMD ["bash", "-l"]
+CMD ["/usr/sbin/mfschunkserver", "start"]
