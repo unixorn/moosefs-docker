@@ -12,4 +12,4 @@ RUN update-ca-certificates
 RUN apt-get install -y moosefs-metalogger
 
 LABEL description="moosefs-metalogger image"
-CMD ["bash", "-l"]
+CMD ["/usr/sbin/mfsmetalogger", "start"]

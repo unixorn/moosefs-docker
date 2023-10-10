@@ -12,4 +12,4 @@ RUN update-ca-certificates
 RUN apt-get install -y moosefs-cgiserv
 LABEL description="moosefs-cgiserv image"
 
-CMD ["bash", "-l"]
+CMD ["/usr/sbin/mfscgiserv", "start"]
