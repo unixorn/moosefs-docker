@@ -26,40 +26,39 @@ PLATFORMS=linux/arm64,linux/amd64,linux/arm/v7
 install_hooks: ## Install the git hooks
 	poetry run pre-commit install
 
-pull:
-	docker pull ubuntu:22.04
+local_cgiserver: ## Makes a moosefs-cgiserver docker image for only the architecture we're running on. Does not push to dockerhub.
+	docker buildx build --pull --load -t ${HUB_USER}/moosefs-cgiserver -f Dockerfile.cgiserver .
 
-local_cgiserver: pull ## Makes a moosefs-cgiserver docker image for only the architecture we're running on. Does not push to dockerhub.
-	docker buildx build --load -t ${HUB_USER}/moosefs-cgiserver -f Dockerfile.cgiserver .
+multiarch_cgiserver: ## Makes a moosefs-cgiserver multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-cgiserver:$(MOOSEFS_VERSION) -f Dockerfile.cgiserver .
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-cgiserver:latest -f Dockerfile.cgiserver .
+	docker pull ${HUB_USER}/moosefs-cgiserver:latest
 
-multiarch_cgiserver: pull ## Makes a moosefs-cgiserver multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-cgiserver:$(MOOSEFS_VERSION) -f Dockerfile.cgiserver .
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-cgiserver:latest -f Dockerfile.cgiserver .
-	make local_cgiserver
 
-local_chunkserver: pull ## Makes a moosefs-chunkserver docker image for only the architecture we're running on. Does not push to dockerhub.
-	docker buildx build --load -t ${HUB_USER}/moosefs-chunkserver -f Dockerfile.chunkserver .
+local_chunkserver: ## Makes a moosefs-chunkserver docker image for only the architecture we're running on. Does not push to dockerhub.
+	docker buildx build --pull --load -t ${HUB_USER}/moosefs-chunkserver -f Dockerfile.chunkserver .
 
-multiarch_chunkserver: pull ## Makes a moosefs-chunkserver multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-chunkserver:$(MOOSEFS_VERSION) -f Dockerfile.chunkserver .
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-chunkserver:latest -f Dockerfile.chunkserver .
-	make local_chunkserver
+multiarch_chunkserver: ## Makes a moosefs-chunkserver multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-chunkserver:$(MOOSEFS_VERSION) -f Dockerfile.chunkserver .
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-chunkserver:latest -f Dockerfile.chunkserver .
+	docker pull ${HUB_USER}/moosefs-chunkserver:latest
 
-local_master: pull ## Makes a moosefs-master docker image for only the architecture we're running on. Does not push to dockerhub.
-	docker buildx build --load -t ${HUB_USER}/moosefs-master -f Dockerfile.master .
 
-multiarch_master: pull ## Makes a moosefs-master multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-master:$(MOOSEFS_VERSION) -f Dockerfile.master .
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-master:latest -f Dockerfile.master .
-	make local_master
+local_master: ## Makes a moosefs-master docker image for only the architecture we're running on. Does not push to dockerhub.
+	docker buildx build --pull --load -t ${HUB_USER}/moosefs-master -f Dockerfile.master .
 
-local_metalogger: pull ## Makes a moosefs-metalogger docker image for only the architecture we're running on. Does not push to dockerhub.
-	docker buildx build --load -t ${HUB_USER}/moosefs-metalogger -f Dockerfile.metalogger .
+multiarch_master: ## Makes a moosefs-master multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-master:$(MOOSEFS_VERSION) -f Dockerfile.master .
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-master:latest -f Dockerfile.master .
+	docker pull ${HUB_USER}/moosefs-master:latest
 
-multiarch_metalogger: pull ## Makes a moosefs-metalogger multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-metalogger:$(MOOSEFS_VERSION) -f Dockerfile.metalogger .
-	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --push -t ${HUB_USER}/moosefs-metalogger:latest -f Dockerfile.metalogger .
-	make local_metalogger
+local_metalogger: ## Makes a moosefs-metalogger docker image for only the architecture we're running on. Does not push to dockerhub.
+	docker buildx build --pull --load -t ${HUB_USER}/moosefs-metalogger -f Dockerfile.metalogger .
+
+multiarch_metalogger: ## Makes a moosefs-metalogger multi-architecture docker image for linux/arm64, linux/amd64 and linux/arm/v7 and pushes it to dockerhub
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-metalogger:$(MOOSEFS_VERSION) -f Dockerfile.metalogger .
+	docker buildx build --build-arg application_version=${MOOSEFS_VERSION} --platform ${PLATFORMS} --pull --push -t ${HUB_USER}/moosefs-metalogger:latest -f Dockerfile.metalogger .
+	docker pull ${HUB_USER}/moosefs-metalogger:latest
 
 local: local_cgiserver \ ## Make images for whatever architecture you're running on, but does not push to docker hub
 	local_chunkserver \
