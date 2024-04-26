@@ -1,15 +1,14 @@
-# FROM debian:11-slim
-FROM ubuntu:22.04
+FROM debian:12-slim
 
 ARG application_version
 LABEL maintainer="Joe Block <jpb@unixorn.net>"
-LABEL description="moosefs-master image"
+LABEL description="moosefs-netdump image"
 LABEL version=${application_version}
 
-RUN apt-get update
-RUN apt-get install -y apt-utils ca-certificates --no-install-recommends && \
-    update-ca-certificates
+RUN apt-get update && \
+    apt-get install -y apt-utils ca-certificates --no-install-recommends
+RUN update-ca-certificates
 
-RUN apt-get install -y moosefs-master && \
+RUN apt-get install -y moosefs-netdump
 
 CMD ["bash", "-l"]

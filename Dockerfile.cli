@@ -2,13 +2,13 @@ FROM debian:12-slim
 
 ARG application_version
 LABEL maintainer="Joe Block <jpb@unixorn.net>"
+LABEL description="moosefs-cli image"
 LABEL version=${application_version}
 
 RUN apt-get update && \
     apt-get install -y apt-utils ca-certificates --no-install-recommends
 RUN update-ca-certificates
 
-RUN apt-get install -y moosefs-master
-LABEL description="moosefs-master image"
+RUN apt-get install -y moosefs-cli
 
-CMD ["/usr/sbin/mfsmaster", "start"]
+CMD ["bash", "-l"]
