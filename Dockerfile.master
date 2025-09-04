@@ -1,12 +1,8 @@
-FROM debian:13-slim
+FROM unixorn/moosefs-base
 
 ARG application_version
 LABEL maintainer="Joe Block <jpb@unixorn.net>"
 LABEL version=${application_version}
-
-RUN apt update && \
-    apt install -y apt-utils ca-certificates --no-install-recommends
-RUN update-ca-certificates
 
 RUN apt install -y moosefs-master
 LABEL description="moosefs-master image"

@@ -1,13 +1,9 @@
-FROM debian:12-slim
+FROM unixorn/moosefs-base
 
 ARG application_version
 LABEL maintainer="Joe Block <jpb@unixorn.net>"
 LABEL description="moosefs-netdump image"
 LABEL version=${application_version}
-
-RUN apt-get update && \
-    apt-get install -y apt-utils ca-certificates --no-install-recommends
-RUN update-ca-certificates
 
 RUN apt-get install -y moosefs-netdump
 
