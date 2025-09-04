@@ -81,7 +81,7 @@ multiarch_netdump: ## Makes a moosefs-netdump multi-architecture docker image fo
 	docker pull ${HUB_USER}/moosefs-netdump:latest
 
 local: local_all  ## Make images for whatever architecture you're running on, but does not push to docker hub
-local_all: local_cgiserver local_chunkserver local_cli local_master local_metalogger local_netdump local_base 
+local_all: local_cgiserver local_chunkserver local_cli local_master local_metalogger local_netdump local_base
 
 multiarch_images: multiarch ## Builds multi-architecture docker images for all the services and pushes them to docker hub
 multiarch: multiarch_cgiserver \
